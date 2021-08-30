@@ -1,11 +1,11 @@
 const callback = entries => {
   entries.forEach(entry => {
-    if (entry.intersecting) {
+    if (entry.isIntersecting) {
     }
   });
 };
 
 const options = {};
 const observer = new intersectionObserver(callback, options);
-
-observer.observe(WHAT - TO - OBSERVE);
+const sentinel = document.getElementById('sentinel');
+observer.observe(sentinel);

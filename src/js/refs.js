@@ -2,7 +2,7 @@ const refs = {
   searchForm: document.getElementById('search-form'),
   galerryList: document.querySelector('.gallery'),
   searchBtn: document.querySelector('.searchBtn'),
-  searchMore: document.querySelector('.searchMore'),
+  sentinel: document.getElementById('sentinel'),
 };
 
 export default refs;

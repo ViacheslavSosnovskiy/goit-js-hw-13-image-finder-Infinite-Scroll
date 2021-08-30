@@ -8,12 +8,11 @@ import { error } from '@pnotify/core';
 import '@pnotify/core/dist/BrightTheme.css';
 import '@pnotify/core/dist/PNotify.css';
 //  ==== intersectionObserver ====
-import './js/intersectionObserver.js';
+// import './js/intersectionObserver.js';
 
 const newsApiService = new NewApiService();
 
 refs.searchForm.addEventListener('submit', onSearch);
-refs.searchMore.addEventListener('click', onLoadMore);
 
 function onSearch(e) {
   e.preventDefault();
@@ -40,21 +39,6 @@ function onSearch(e) {
   newsApiService.fetchPictures().then(appendArticlesMarkup);
 }
 
-function onLoadMore() {
-  newsApiService.fetchPictures().then(hits => {
-    appendArticlesMarkup(hits);
-    scroll();
-  });
-}
-
-function scroll() {
-  const element = document.getElementById('scroll');
-  element.scrollIntoView({
-    behavior: 'smooth',
-    block: 'end',
-  });
-}
-
 function appendArticlesMarkup(hits) {
   refs.galerryList.insertAdjacentHTML('beforeend', cards(hits));
 }
@@ -62,3 +46,18 @@ function appendArticlesMarkup(hits) {
 function clearArticlesContainer() {
   refs.galerryList.innerHTML = '';
 }
+
+const onEntry = entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      newsApiService.fetchPictures().then(appendArticlesMarkup);
+      newsApiService.resetPage();
+    }
+  });
+};
+
+const options = {
+  rootMargin: '150px',
+};
+const observer = new IntersectionObserver(onEntry, options);
+observer.observe(refs.sentinel);
