@@ -35,8 +35,9 @@ function onSearch(e) {
     }
   });
 
-  newsApiService.resetPage();
   newsApiService.fetchPictures().then(appendArticlesMarkup);
+  newsApiService.resetPage();
+  registerIntersectionObserver();
 }
 
 function appendArticlesMarkup(hits) {
@@ -47,17 +48,19 @@ function clearArticlesContainer() {
   refs.galerryList.innerHTML = '';
 }
 
-const onEntry = entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      newsApiService.fetchPictures().then(appendArticlesMarkup);
-      newsApiService.resetPage();
-    }
-  });
-};
+function registerIntersectionObserver() {
+  const onEntry = entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && newsApiService.query !== '') {
+        newsApiService.fetchPictures().then(appendArticlesMarkup);
+        newsApiService.resetPage();
+      }
+    });
+  };
 
-const options = {
-  rootMargin: '150px',
-};
-const observer = new IntersectionObserver(onEntry, options);
-observer.observe(refs.sentinel);
+  const options = {
+    rootMargin: '150px',
+  };
+  const observer = new IntersectionObserver(onEntry, options);
+  observer.observe(refs.sentinel);
+}
