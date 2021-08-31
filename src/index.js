@@ -7,8 +7,7 @@ import refs from './js/refs.js';
 import { error } from '@pnotify/core';
 import '@pnotify/core/dist/BrightTheme.css';
 import '@pnotify/core/dist/PNotify.css';
-//  ==== intersectionObserver ====
-// import './js/intersectionObserver.js';
+
 
 const newsApiService = new NewApiService();
 
@@ -64,3 +63,4 @@ function registerIntersectionObserver() {
   const observer = new IntersectionObserver(onEntry, options);
   observer.observe(refs.sentinel);
 }
+
